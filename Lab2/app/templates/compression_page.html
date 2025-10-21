@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <main class="container">
+        <h3 class="text-center">Черновое сжатие</h3>
+        <div class="form-group">
+            <label class="form-label">Тип данных</label>
+            {% if compression.data_type %}
+                <input disabled type="text" class="form-control" style="width: 250px"
+                       value="{{ compression.data_type }}">
+            {% else %}
+                <input placeholder="Укажите тип данных" disabled type="text" class="form-control"
+                       style="width: 250px">
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-label">Обьем после сжатия (байт)</label>
+            {% if compression.volume_after %}
+                <input disabled type="text" class="form-control" style="width: 250px"
+                       value="{{ compression.volume_after }}">
+            {% else %}
+                <input placeholder="Не рассчитано" disabled type="text" class="form-control"
+                       style="width: 250px">
+            {% endif %}
+        </div>
+        {% if items|length > 0 %}
+            <h4 class="text-center">Алгоритмы</h4>
+            <div class="cards-wrapper row">
+                {% for item in items %}
+                    <div class="card w-100 mb5">
+                        <div class="row g-0 align-items-center px-3">
+                            <div class="col-md-3 justify-content-center d-flex">
+                                <a href="/algorithms/{{ item.algorithm.id }}/">
+                                    <img src="{{ item.algorithm.image.url }}" alt=""/>
+                                </a>
+                            </div>
+                            <div class="col-md-3 align-items-center d-flex flex-column">
+                                <p class="card-text text-muted">Название</p>
+                                <h5 class="card-title">{{ item.algorithm.name }}</h5>
+                            </div>
+                            <div class="col-md-3 align-items-center d-flex flex-column">
+                                <p class="card-text text-muted">Коэффициент сжатия</p>
+                                <p class="card-text">{{ item.algorithm.ratio }} </p>
+                            </div>
+                            <div class="col-md-3 justify-content-center d-flex">
+                                <div class="form-group">
+                                    <label class="form-label">Обьем до сжатия (байт)</label>
+                                    <input disabled type="text" class="form-control" style="width: 150px"
+                                           value="{{ item.volume }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h4 class="text-center">Алгоритмы еще не добавлены</h4>
+        {% endif %}
+        <form method="post" action="{% url 'delete_compression' compression.id %}"
+              class="d-flex justify-content-center">
+            {% csrf_token %}
+            <button class="btn btn-danger delete-draft-compression-btn" type="submit" style="width: 125px">
+                Удалить
+            </button>
+        </form>
+    </main>
+{% endblock content %}

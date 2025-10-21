@@ -1,0 +1,20 @@
+{% load static %}
+
+{% if draft_compression %}
+    <div class="col md-4 justify-end">
+        <a href="/compressions/{{ draft_compression.id }}/" class="w-25">
+            <button type="submit" class="bin btn btn-primary position-relative w-100">
+                <img src="/static/images/cart.svg" class="bin-icon">
+                <div class="badge position-absolute badge bg-primary rounded-pill">
+                    {{ algorithms_count }}
+                </div>
+            </button>
+        </a>
+    </div>
+{% else %}
+    <div class="col md-4 justify-end">
+        <button type="submit" class="bin btn btn-secondary disabled w-25">
+            Корзина
+        </button>
+    </div>
+{% endif %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <main class="container">
+        <div class="row d-flex justify-content-between">
+            {% include "search_bar.html" %}
+            {% include "bin.html" %}
+        </div>
+        <div class="cards-wrapper">
+            {% for algorithm in algorithms %}
+                <div class="card">
+                    <img src="{{ algorithm.image.url }}" class="algorithm-preview" alt=""/>
+                    <div class="card-body">
+                        <div class="card-info">
+                            <h5 class="card-title">{{ algorithm.name }}</h5>
+                            <p class="card-text">Коэффициент сжатия: {{ algorithm.ratio }}
+                                </p>
+                        </div>
+                        <div class="row card-btns">
+                            <div class="col d-flex justify-content-center flex-grow-1">
+                                <a href="/algorithms/{{ algorithm.id }}" class="btn btn-primary">
+                                    Открыть
+                                </a>
+                            </div>
+                            <form method="post" action="{% url 'add_algorithm_to_draft_compression' algorithm.id %}"
+                                  class="col d-flex justify-content-center">
+                                {% csrf_token %}
+                                <input type="hidden" name="algorithm_name" value="{{ algorithm_name }}">
+                                <button class="add-btn btn btn-secondary" type="submit">
+                                    Добавить
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </main>
+{% endblock content %}
+
